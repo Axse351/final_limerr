@@ -105,6 +105,8 @@ class UsersController extends Controller
             return back()->with('message', 'Account Not Found');
         }
 
+        $users->delete();
+
         return back()->with('success', 'Berhasil Menghapus Account !');
     }
 }
