@@ -68,11 +68,13 @@
                                                 <td>
                                                     {{-- <a href="{{ route('pakets.show', $paket->id) }}" class="btn btn-info btn-sm">Detail</a> --}}
                                                     {{-- <a href="{{ route('pakets.edit', $paket->id) }}" class="btn btn-warning btn-sm">Edit</a> --}}
-                                                    <form action={{-- "{{ route('pakets.destroy', $paket->id) }}" --}} method="POST" class="d-inline"
+                                                    <form action="{{ route('staff.paket.destroy', $paket->id) }}"
+                                                        method="POST" class="d-inline"
                                                         onsubmit="return confirm('Yakin ingin menghapus paket ini?')">
                                                         @csrf
                                                         @method('DELETE')
-                                                        <button type="submit" class="btn btn-danger btn-sm">Hapus</button>
+                                                        <center><button type="submit"
+                                                                class="btn btn-danger btn-sm">Hapus</button></center>
                                                     </form>
                                                 </td>
                                             </tr>

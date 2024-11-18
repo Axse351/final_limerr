@@ -14,14 +14,18 @@
 
             @if (session()->has('success'))
                 <div class="alert alert-primary">
-                    {{session()->get('success')}}
+                    {{ session()->get('success') }}
                 </div>
             @endif
 
             <div class="card">
                 <div class="card-header">
-                    <a href="{{route('admin.users.create')}}" class="btn btn-primary"><i class="fas fa-plus"></i></a>
+                    <a href="{{ route('admin.users.create') }}" class="btn btn-primary"><i class="fa fa-plus"> </i>
+                        &nbsp;Tambah Data
+                    </a>
                 </div>
+
+
                 <div class="card-body">
                     <div class="table-responsive">
                         <table class="table table-bordered table-striped table-hover">
@@ -38,17 +42,20 @@
                             <tbody>
                                 @forelse ($users as $item)
                                     <tr>
-                                        <td>{{$loop->iteration}}</td>
-                                        <td>{{$item->name}}</td>
-                                        <td>{{$item->email}}</td>
-                                        <td>{{$item->role}}</td>
-                                        <td>{{$item->namawahana}}</td>
+                                        <td>{{ $loop->iteration }}</td>
+                                        <td>{{ $item->name }}</td>
+                                        <td>{{ $item->email }}</td>
+                                        <td>{{ $item->role }}</td>
+                                        <td>{{ $item->namawahana }}</td>
                                         <td>
-                                            <a href="{{route('admin.users.edit', ['id' => $item->id])}}" class="btn btn-warning btn-sm"><i class="fas fa-pen"></i></a>
-                                            <form action="{{route('admin.users.destroy', ['id' => $item->id])}}" method="POST">
+                                            <a href="{{ route('admin.users.edit', ['id' => $item->id]) }}"
+                                                class="btn btn-warning btn-sm"><i class="fas fa-pen"></i></a>
+                                            <form action="{{ route('admin.users.destroy', ['id' => $item->id]) }}"
+                                                method="POST">
                                                 @csrf
-                                                @method("DELETE")
-                                                <button type="submit" class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></button>
+                                                @method('DELETE')
+                                                <button type="submit" class="btn btn-danger btn-sm"><i
+                                                        class="fas fa-trash"></i></button>
                                             </form>
                                         </td>
                                     </tr>

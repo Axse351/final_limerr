@@ -15,11 +15,6 @@
                 <a class="nav-link" href="{{ route('admin.dashboard') }}"><i class="fa fa-home" style="color: #1F316F";></i>
                     <span style="color: #1F316F";>Berandaaa</span></a>
             </li>
-
-            {{-- <li class="{{ Request::is('blank-page') ? 'active' : '' }}">
-                <a class="nav-link" href="{{ route('staff.history.index') }}"><i class="far fa-fire"></i>
-                    <span>Kelola Riwayat</span></a>
-            </li> --}}
             <li class="{{ Request::is('admin.users*') ? 'active' : '' }}">
                 <a class="nav-link" href="{{ route('admin.users') }}"><i class="fa fa-users"  style="color: #1F316F";></i>
                     <span  style="color: #1F316F";>Data Users</span></a>
@@ -40,30 +35,9 @@
                 <a class="nav-link" href="{{ route('admin.paket.index') }}"><i class="fa fa-cutlery" style="color: #1F316F";></i>
                     <span  style="color: #1F316F"; >Kategori Menu</span></a>
             </li>
-            {{--  
-            <li class="nav-item dropdown">
-                <a href="#" class="nav-link has-dropdown"><i class="fas fa-fire"></i><span>Kelola
-                        Produk</span></a>
-                <ul class="dropdown-menu">
-                    <li class='{{ Request::is('dashboard-general-dashboard') ? 'active' : '' }}'>
-                        <a class="nav-link" href="{{ route('staff.product.index') }}">Kelola Bahan Baku</a>
-                    </li>
-                </ul>
-                <ul class="dropdown-menu">
-                    <li class='{{ Request::is('dashboard-general-dashboard') ? 'active' : '' }}'>
-                        <a class="nav-link" href="{{ route('staff.storage_one.index') }}">Kelola Storage 1</a>
-                    </li>
-                </ul>
-                <ul class="dropdown-menu">
-                    <li class='{{ Request::is('dashboard-general-dashboard') ? 'active' : '' }}'>
-                        <a class="nav-link" href="{{ route('staff.storage_two.index') }}">Kelola Storage 2</a>
-                    </li>
-                </ul>
-                <ul class="dropdown-menu">
-                    <li class='{{ Request::is('dashboard-general-dashboard') ? 'active' : '' }}'>
-                        <a class="nav-link" href="{{ route('staff.product_result.index') }}">Kelola Barang Jadi</a>
-                    </li>
-                </ul>
+            <li class="{{ Request::is('admin.wa.index*') ? 'active' : '' }}">
+                <a class="nav-link" href="{{ route('admin.wa.index') }}"><i class="fa fa-comments" style="color: #1F316F";></i>
+                    <span  style="color: #1F316F"; >Wa Sender Setting</span></a>
             </li>
-            --}}
+        </ul>
 </div>

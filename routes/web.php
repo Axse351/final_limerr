@@ -11,6 +11,7 @@ use App\Http\Controllers\PaketController;
 use App\Http\Controllers\ScanController;
 use App\Http\Controllers\HistoriesController;
 use App\Http\Controllers\UsersController;
+use App\Http\Controllers\WaSenderController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -59,7 +60,7 @@ Route::middleware(['auth'])->group(function () {
         Route::put('transaksi/{transaksi}', [TransaksiController::class, 'update_admin'])->name('admin.transaksi.update');
         Route::get('admin/transaksi/create', [TransaksiController::class, 'createadmin'])->name('admin.transaksi.create');
         Route::post('admin/transaksi/store', [TransaksiController::class, 'storeadmin'])->name('admin.transaksi.store');
-        Route::delete('transaksi/{transaksi}', [TransaksiController::class, 'destroy_two'])->name('admin.transaksi.destroy');
+        Route::delete('transaksi/{transaksi}', [TransaksiController::class, 'destroy'])->name('admin.transaksi.destroy');
 
         //Route scan
         Route::get('scan', [ScanController::class, 'indexscan'])->name('admin.scan.index');
@@ -72,9 +73,11 @@ Route::middleware(['auth'])->group(function () {
 
         // Paket routes
         Route::get('/paket', [PaketController::class, 'index_admin'])->name('admin.paket.index');
-        Route::get('/paket/create', [PaketController::class, 'create'])->name('admin.paket.create');
-        Route::post('/paket', [PaketController::class, 'store'])->name('admin.paket.store');
+        Route::get('/paket/create', [PaketController::class, 'createadmin'])->name('admin.paket.create');
+        Route::post('/paket', [PaketController::class, 'storeadmin'])->name('admin.paket.store');
         Route::get('/get-paket/{id}', [TransaksiController::class, 'getPaket'])->name('admin.paket.getPaket'); // Named route
+        Route::delete('/admin/paket/{id}', [PaketController::class, 'destroyadmin'])->name('admin.paket.destroy');
+
 
         Route::prefix('users')->group(function () {
             Route::get('/', [UsersController::class, 'index'])->name('admin.users');
@@ -83,6 +86,12 @@ Route::middleware(['auth'])->group(function () {
             Route::get('/{id}/edit', [UsersController::class, 'edit'])->name('admin.users.edit');
             Route::put('/{id}/update', [UsersController::class, 'update'])->name('admin.users.update');
             Route::delete('/{id}/destroy', [UsersController::class, 'destroy'])->name('admin.users.destroy');
+        });
+
+        Route::prefix('wa')->group(function () {
+            Route::get('/', [WaSenderController::class, 'index'])->name('admin.wa.index');
+            Route::post('/generateQrcodeWa', [WaSenderController::class, 'generateQrcodeWa'])->name('admin.wa.generateQrcodeWa');
+            Route::post('/storeTransaksiQrCode', [WaSenderController::class, 'storeTransaksiQrCode'])->name('admin.wa.storeTransaksiQrCode');
         });
     });
 
@@ -169,6 +178,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/paket/create', [PaketController::class, 'create'])->name('staff.paket.create');
         Route::post('/paket', [PaketController::class, 'store'])->name('staff.paket.store');
         Route::get('/get-paket/{id}', [TransaksiController::class, 'getPaket'])->name('staff.paket.getPaket'); // Named route
+        Route::delete('/staff/paket/{id}', [PaketController::class, 'destroy'])->name('staff.paket.destroy');
 
         // Product routes
         Route::get('product', [ProductController::class, 'index'])->name('staff.product.index');
@@ -180,6 +190,8 @@ Route::middleware(['auth'])->group(function () {
 
         // History routes
         Route::resource('history', HistoryController::class);
+
+        Route::post('/storeTransaksiQrCode', [WaSenderController::class, 'storeTransaksiQrCode'])->name('staff.storeTransaksiQrCode');
     });
 
 

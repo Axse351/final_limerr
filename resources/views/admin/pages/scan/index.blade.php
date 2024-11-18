@@ -33,8 +33,19 @@
                             </div>
                             <div class="card-body">
                                 <div id="qr-reader"></div>
-                                <button id="start-scan-btn" class="btn btn-primary mb-3">Start Scan</button>
-                                <input type="file" id="qr-upload" accept="image/*" class="btn btn-secondary mb-3">
+                                <div class="row mt-3">
+                                    <div class="col-lg-4">
+                                        <button id="start-scan-btn" class="btn btn-primary w-100 mt-1">Start Scan</button>
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <select id="cameraSelection" class="form-control">
+                                            <option value="">Pilih Kamera</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <input type="file" id="qr-upload" accept="image/*" class="form-control">
+                                    </div>
+                                </div>
                                 <audio id="scanSuccessSound" src="{{ asset('sounds/scan-success.mp3') }}"></audio>
                             </div>
                         </div>
@@ -97,7 +108,18 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         $(document).ready(function() {
-            // Function to play sound on successful scan
+            const Toast = Swal.mixin({
+                toast: true,
+                position: "top-end",
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.onmouseenter = Swal.stopTimer;
+                    toast.onmouseleave = Swal.resumeTimer;
+                }
+            });
+
             function playScanSuccessSound() {
                 const audio = document.getElementById('scanSuccessSound');
                 audio.currentTime = 0;
@@ -105,9 +127,7 @@
             }
 
             function showScanResult(decodedText) {
-                // document.getElementById('scanResultText').textContent = decodedText;
                 $('#scanResultModal').modal('show');
-
                 $.ajax({
                     url: `{{ url('staff/checkTransaksi/${decodedText}') }}`,
                     method: "GET",
@@ -125,7 +145,7 @@
                                         </tr>`;
                             $("#append-result").html(html);
                         } else {
-                            alert('Data Tidak Di Temukan')
+                            alert('Data Tidak Ditemukan');
                         }
                     },
                     error: function(err) {
@@ -136,7 +156,7 @@
 
             function onScanSuccess(decodedText) {
                 playScanSuccessSound();
-                showScanResult(decodedText);
+                showScanResult(decodedText + '.png');
                 document.getElementById('qrcodeInput').value = decodedText;
             }
 
@@ -144,13 +164,32 @@
                 console.warn(`Code scan error = ${error}`);
             }
 
-            document.getElementById('start-scan-btn').addEventListener('click', function() {
-                document.getElementById('qr-reader').style.display = 'block';
-                const html5QrcodeScanner = new Html5QrcodeScanner("qr-reader", {
-                    fps: 10,
-                    qrbox: 250
-                });
-                html5QrcodeScanner.render(onScanSuccess, onScanFailure);
+            Html5Qrcode.getCameras().then(devices => {
+                if (devices && devices.length) {
+                    const cameraSelection = $('#cameraSelection');
+                    devices.forEach(device => {
+                        cameraSelection.append(new Option(device.label, device.id));
+                    });
+                }
+            }).catch(err => console.error("Error mendapatkan kamera:", err));
+
+            $('#start-scan-btn').click(function() {
+                const cameraId = $('#cameraSelection').val();
+                if (cameraId) {
+                    document.getElementById('qr-reader').style.display = 'block';
+                    const html5QrcodeScanner = new Html5Qrcode("qr-reader");
+                    html5QrcodeScanner.start(
+                        cameraId,
+                        { fps: 10, qrbox: 250 },
+                        onScanSuccess,
+                        onScanFailure
+                    ).catch(err => console.error("Error memulai scan:", err));
+                } else {
+                    Toast.fire({
+                        icon: "warning",
+                        title: "Silahkan Pilih Kamera Terlebih Dahulu"
+                    });
+                }
             });
 
             document.getElementById('qr-upload').addEventListener('change', function(event) {
@@ -160,18 +199,6 @@
                     html5QrCode.scanFile(file, true)
                         .then(onScanSuccess)
                         .catch(onScanFailure);
-                }
-            });
-
-            const Toast = Swal.mixin({
-                toast: true,
-                position: "top-end",
-                showConfirmButton: false,
-                timer: 3000,
-                timerProgressBar: true,
-                didOpen: (toast) => {
-                    toast.onmouseenter = Swal.stopTimer;
-                    toast.onmouseleave = Swal.resumeTimer;
                 }
             });
 
@@ -186,14 +213,13 @@
                     },
                     dataType: "json",
                     success: function(response) {
-                        console.log(response);
                         if (response.code == 200) {
                             Toast.fire({
                                 icon: "success",
                                 title: response.message
                             });
                             $('#scanResultModal').modal('hide');
-                            window.location.reload()
+                            window.location.reload();
                         } else {
                             Toast.fire({
                                 icon: "error",
@@ -205,15 +231,7 @@
                         console.log(err);
                     }
                 })
-            })
-
-            function createHiddenInput(name, value) {
-                const input = document.createElement('input');
-                input.type = 'hidden';
-                input.name = name;
-                input.value = value;
-                return input;
-            }
+            });
         });
     </script>
 @endpush

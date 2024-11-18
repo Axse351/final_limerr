@@ -1,4 +1,4 @@
-@extends('staff.layouts.app')
+@extends('admin.layouts.app')
 
 @section('title', 'Tambah Produk')
 
@@ -12,7 +12,7 @@
     <link rel="stylesheet" href="{{ asset('library/bootstrap-tagsinput/dist/bootstrap-tagsinput.css') }}">
 @endpush
 
-@section('staff.content')
+@section('admin.content')
     <div class="main-content">
         <section class="section">
             <div class="section-header">
@@ -29,7 +29,7 @@
 
 
                 <div class="card">
-                    <form action="{{ route('staff.paket.store') }}" method="POST" enctype="multipart/form-data">
+                    <form action="{{ route('admin.paket.store') }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         <div class="card-header">
                             <h4>Input Text</h4>

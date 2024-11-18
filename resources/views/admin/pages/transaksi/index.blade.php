@@ -78,9 +78,9 @@
                                             <td class="text-center">{{ $transaksi->paket->nm_paket }}</td>
                                             <td class="text-center">{{ $transaksi->paket->wahana }}</td>
                                             <td class="text-center">{{ $transaksi->paket->porsi }}</td>
-                                            <td class="text-center">{{ $transaksi->barcode }}</td> <!-- Tampilkan kode unik -->
+                                            <td class="text-center">{{ $barcode = str_replace('.png', '', $transaksi->barcode) }}</td>
                                             <td class="text-center">
-                                                {!! QrCode::size(100)->generate($transaksi->barcode) !!}
+                                                <img src="{{ asset('storage/qrcodes/' . $transaksi->barcode) }}" width="100" alt="">
                                             </td>
                                             <td>
                                                 <div class="d-flex justify-content-center">

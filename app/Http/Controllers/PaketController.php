@@ -10,37 +10,41 @@ class PaketController extends Controller
     /**
      * Display a listing of the resource.
      */
-   
-     public function index()
-     {
-         $pakets = Paket::paginate(10);
-         return view('staff.pages.paket.index', compact('pakets'));
-     }
-     public function index_admin()
-     {
-         $pakets = Paket::paginate(10);
-         return view('admin.pages.paket.index', compact('pakets'));
-     }
-// PaketController.php
-public function getPaket($id)
-{
-    $paket = Paket::find($id);
 
-    if ($paket) {
-        return response()->json([
-            'nm_paket' => $paket->nm_paket, // Pastikan nm_paket dikirim
-            'wahana' => $paket->wahana,
-            'porsi' => $paket->porsi,
-        ]);
+    public function index()
+    {
+        $pakets = Paket::paginate(10);
+        return view('staff.pages.paket.index', compact('pakets'));
     }
+    public function index_admin()
+    {
+        $pakets = Paket::paginate(10);
+        return view('admin.pages.paket.index', compact('pakets'));
+    }
+    // PaketController.php
+    public function getPaket($id)
+    {
+        $paket = Paket::find($id);
 
-    return response()->json(null, 404);
-}
+        if ($paket) {
+            return response()->json([
+                'nm_paket' => $paket->nm_paket, // Pastikan nm_paket dikirim
+                'wahana' => $paket->wahana,
+                'porsi' => $paket->porsi,
+            ]);
+        }
+
+        return response()->json(null, 404);
+    }
 
     // Method untuk menampilkan form tambah paket
     public function create()
     {
         return view('staff.pages.paket.create');
+    }
+    public function createadmin()
+    {
+        return view('admin.pages.paket.create');
     }
 
     // Method untuk menyimpan paket baru ke dalam database
@@ -59,6 +63,22 @@ public function getPaket($id)
         ]);
 
         return redirect()->route('staff.paket.index')->with('success', 'Paket berhasil ditambahkan');
+    }
+    public function storeadmin(Request $request)
+    {
+        $request->validate([
+            'nm_paket' => 'required|string|max:255',
+            'wahana' => 'required|string|max:255',
+            'porsi' => 'required|integer',
+        ]);
+
+        Paket::create([
+            'nm_paket' => $request->nm_paket,
+            'wahana' => $request->wahana,
+            'porsi' => $request->porsi,
+        ]);
+
+        return redirect()->route('admin.paket.index')->with('success', 'Paket berhasil ditambahkan');
     }
 
     // Method untuk menampilkan detail paket
@@ -107,7 +127,14 @@ public function getPaket($id)
 
         return redirect()->route('staff.paket.index')->with('success', 'Paket berhasil dihapus');
     }
+    public function destroyadmin($id)
+    {
+        $paket = Paket::findOrFail($id);
+        $paket->delete();
+
+        return redirect()->route('admin.paket.index')->with('success', 'Paket berhasil dihapus');
+    }
 
     // Method untuk mendapatkan data wahana dan porsi berdasarkan ID paket (untuk AJAX request)
-   
+
 }

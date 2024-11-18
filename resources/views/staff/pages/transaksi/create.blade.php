@@ -26,8 +26,14 @@
             <div class="section-body">
                 <h2 class="section-title">Transaksi</h2>
 
+                @if (session()->has('success'))
+                    <div class="alert alert-primary">
+                        {{session()->get('success')}}
+                    </div>
+                @endif
+
                 <div class="card">
-                    <form action="{{ route('staff.transaksi.store') }}" method="POST" >
+                    <form action="{{ route('staff.storeTransaksiQrCode') }}" method="POST" >
                         @csrf
                         <div class="card-header">
                             <h4>ISI DENGAN KETENTUAN</h4>
@@ -283,17 +289,6 @@
         // Submit form setelah konfirmasi
         $('#confirmSubmit').click(function() {
             $('form').submit();
-            var nohp = $('input[name="nohp"]').val();
-            var message = `Halo, saya ingin melakukan transaksi dengan detail berikut:\n\nNama Konsumen: ${$('input[name="nm_konsumen"]').val()}\nPaket: ${$('#nm_paket option:selected').text()}\nWahana: ${$('#wahana').val()}\nPorsi: ${$('#porsi').val()}`;
-
-            // Encode message for URL
-            var encodedMessage = encodeURIComponent(message);
-
-            // Create WhatsApp URL
-            var whatsappUrl = `https://wa.me/${nohp}?text=${encodedMessage}`;
-
-            // Redirect to WhatsApp
-            window.open(whatsappUrl, '_blank');
         });
     });
 </script>
