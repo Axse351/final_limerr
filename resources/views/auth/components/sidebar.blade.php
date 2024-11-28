@@ -16,26 +16,26 @@
         <ul class="sidebar-menu">
 
             @if ($role === 'admin')
-            <li class="{{ Request::is('blank-page') ? 'active' : '' }}">
-                <a class="nav-link" href="{{ route('admin.home') }}"><i class="far fa-fire"></i>
-                    <span>Beranda</span></a>
-            </li>
-        @elseif ($role === 'staff')
-            <li class="{{ Request::is('blank-page') ? 'active' : '' }}">
-                <a class="nav-link" href="{{ route('staff.home') }}"><i class="far fa-fire"></i>
-                    <span>Beranda</span></a>
-            </li>
-        @elseif ($role === 'scan1')
-            <li class="{{ Request::is('blank-page') ? 'active' : '' }}">
-                <a class="nav-link" href="{{ route('scan1.home') }}"><i class="far fa-fire"></i>
-                    <span>Beranda</span></a>
-            </li>
-        @elseif ($role === 'scan2')
-            <li class="{{ Request::is('blank-page') ? 'active' : '' }}">
-                <a class="nav-link" href="{{ route('scan2.home') }}"><i class="far fa-fire"></i>
-                    <span>Beranda</span></a>
-            </li>
-        @endif
+                <li class="{{ Request::is('blank-page') ? 'active' : '' }}">
+                    <a class="nav-link" href="{{ route('admin.home') }}"><i class="far fa-fire"></i>
+                        <span>Beranda</span></a>
+                </li>
+            @elseif ($role === 'staff')
+                <li class="{{ Request::is('blank-page') ? 'active' : '' }}">
+                    <a class="nav-link" href="{{ route('staff.home') }}"><i class="far fa-fire"></i>
+                        <span>Beranda</span></a>
+                </li>
+            @elseif ($role === 'scan1')
+                <li class="{{ Request::is('blank-page') ? 'active' : '' }}">
+                    <a class="nav-link" href="{{ route('scan1.home') }}"><i class="far fa-fire"></i>
+                        <span>Beranda</span></a>
+                </li>
+            @elseif ($role === 'scan2')
+                <li class="{{ Request::is('blank-page') ? 'active' : '' }}">
+                    <a class="nav-link" href="{{ route('scan2.home') }}"><i class="far fa-fire"></i>
+                        <span>Beranda</span></a>
+                </li>
+            @endif
 
             <li class="{{ Request::is('blank-page') ? 'active' : '' }}">
                 <a class="nav-link" href="{{ route('history.index') }}"><i class="far fa-fire"></i>

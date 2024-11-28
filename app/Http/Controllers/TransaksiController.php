@@ -148,6 +148,9 @@ class TransaksiController extends Controller
     public function destroy($id)
     {
         $transaksi = Transaksi::findOrFail($id);
+
+        unlink(public_path('storage/qrcodes/' . $transaksi->barcode));
+
         $transaksi->delete();
 
         return redirect()->route('staff.transaksi.index')->with('success', 'Transaksi berhasil dihapus.');
